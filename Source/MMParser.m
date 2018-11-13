@@ -314,8 +314,7 @@ static NSString * __HTMLEntityForCharacter(unichar character)
     if (level == 0)
         return nil;
     
-    if ([scanner skipWhitespace] == 0)
-        return nil;
+    [scanner skipCharactersFromSet:NSCharacterSet.whitespaceCharacterSet];
     
     NSRange headerRange = scanner.currentRange;
     
@@ -461,20 +460,6 @@ static NSString * __HTMLEntityForCharacter(unichar character)
         {
             [scanner advance];
             [scanner skipCharactersFromSet:whitespaceSet max:1];
-        }
-        else
-        {
-            //
-            // If the following line is a list item
-            // then break the blockquote parsering.
-            //
-            [scanner beginTransaction];
-            [scanner skipIndentationUpTo:2];
-            BOOL hasListMarker = [self _parseListMarkerWithScanner:scanner listType:MMListTypeBulleted]
-            || [self _parseListMarkerWithScanner:scanner listType:MMListTypeNumbered];
-            [scanner commitTransaction:NO];
-            if (hasListMarker)
-                break;
         }
         
         [element addInnerRange:scanner.currentRange];
@@ -865,32 +850,6 @@ static NSString * __HTMLEntityForCharacter(unichar character)
         {
             [self _addTextLineToElement:element withScanner:scanner];
         }
-        
-        [scanner beginTransaction];
-        [scanner skipIndentationUpTo:4];
-        if (scanner.nextCharacter == '>')
-        {
-            //
-            // If next line is start with blockquote mark
-            // then break current list parsering.
-            //
-            // for example:
-            //
-            // > 123
-            // + abc
-            //
-            // "+ abs" should not consider as part of blockquote
-            //
-            // > 234
-            // 567
-            //
-            // "567" is part of the blockquote
-            //
-            [scanner commitTransaction:NO];
-            break;
-        }
-        [scanner commitTransaction:NO];
-        
     }
     
     element.range = NSMakeRange(scanner.startLocation, scanner.location-scanner.startLocation);

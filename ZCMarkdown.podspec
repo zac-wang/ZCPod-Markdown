@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name             = "ZCMarkdown"
-  spec.version          = "1.0"
+  spec.version          = "1.0.1"
   spec.summary          = "markdown文件预览，将markdown文件 转为 html"
   spec.ios.deployment_target = '6.0'
   spec.osx.deployment_target = '10.10'

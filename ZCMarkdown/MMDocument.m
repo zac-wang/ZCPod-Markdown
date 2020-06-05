@@ -24,7 +24,6 @@
 //
 
 #import "MMDocument.h"
-#import "MMDocument_Private.h"
 
 
 @interface MMDocument ()

@@ -34,7 +34,8 @@ int main(int argc, const char * argv[])
     {
         // Read the Markdown from STDIN
         NSFileHandle *inHandle = [NSFileHandle fileHandleWithStandardInput];
-        NSData       *inData   = [inHandle readDataToEndOfFile];
+//        NSData       *inData   = [inHandle readDataToEndOfFile];
+        NSData       *inData   = [NSData dataWithContentsOfFile:@"/Users/wzc/Downloads/iOS编译.md"];
         NSString     *markdown = [[NSString alloc] initWithData:inData encoding:NSUTF8StringEncoding];
         
         // Convert to HTML
